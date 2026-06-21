@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0B57A4">
+<title>Cẩm nang Phường điện tử – Kết nối Chính quyền với Nhân dân</title>
+<style>
+:root{
+  --gov-blue:#0B57A4;       /* xanh chính quyền */
+  --gov-blue-dark:#063e78;
+  --gov-blue-soft:#E8F1FB;
+  --gov-red:#C8102E;        /* đỏ cờ - dùng điểm nhấn */
+  --gov-gold:#FFCE3A;       /* vàng sao */
+  --ink:#142433;
+  --ink-soft:#46566a;
+  --line:#d6e2f0;
+  --bg:#F4F8FC;
+  --white:#ffffff;
+  --ok:#157f4a;
+  --shadow:0 4px 14px rgba(11,87,164,.10);
+  --radius:18px;
+  /* CỠ CHỮ LỚN cho người cao tuổi */
+  --fs-base:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(11,87,164,.15)}
+html{font-size:var(--fs-base)}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+/* ====== Khung điện thoại tối ưu ====== */
+.app{max-width:520px;margin:0 auto;background:var(--bg);min-height:100vh;position:relative;padding-bottom:84px}
+
+/* ====== Header ====== */
+.topbar{
+  background:linear-gradient(160deg,var(--gov-blue) 0%,var(--gov-blue-dark) 100%);
+  color:#fff;padding:16px 18px 22px;position:sticky;top:0;z-index:40;
+  box-shadow:0 2px 12px rgba(6,62,120,.25);
+}
+.topbar .row{display:flex;align-items:center;gap:12px}
+.emblem{
+  width:52px;height:52px;border-radius:50%;background:var(--gov-red);
+  display:grid;place-items:center;flex:0 0 auto;border:2px solid var(--gov-gold);
+}
+.emblem svg{width:30px;height:30px}
+.emblem-logo{width:54px;height:54px;border-radius:13px;background:#fff;flex:0 0 auto;display:grid;place-items:center;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.18);overflow:hidden}
+.emblem-logo img{height:46px;width:auto;display:block}
+.brand h1{font-size:1.15rem;margin:0;font-weight:800;letter-spacing:.2px}
+.brand p{margin:2px 0 0;font-size:.82rem;opacity:.9;font-weight:500}
+
+/* ====== Thanh tìm kiếm ====== */
+.search{padding:14px 16px 4px}
+.search-box{
+  display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--line);
+  border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);
+}
+.search-box:focus-within{border-color:var(--gov-blue)}
+.search-box input{border:0;outline:0;font-size:1.02rem;flex:1;background:transparent;color:var(--ink)}
+.search-box svg{width:22px;height:22px;color:var(--gov-blue);flex:0 0 auto}
+
+/* ====== Nút khẩn cấp ====== */
+.sos{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px 16px 4px}
+.sos a:nth-child(1),.sos a:nth-child(2),.sos a:nth-child(3){grid-column:span 2}
+.sos a:nth-child(4),.sos a:nth-child(5){grid-column:span 3}
+.sos a{
+  background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.sos a:active{transform:scale(.97)}
+.sos .ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center}
+.sos .ico svg{width:24px;height:24px;color:#fff}
+.sos b{font-size:1.5rem;font-weight:800;line-height:1}
+.sos span{font-size:.78rem;color:var(--ink-soft);font-weight:600}
+.sos .e1 .ico{background:var(--gov-red)}
+.sos .e2 .ico{background:#1d6fb8}
+.sos .e3 .ico{background:#e08c00}
+.sos .e4 .ico{background:#157f4a}
+.sos .e5 .ico{background:#7a4ea8}
+
+/* ====== Tiêu đề mục ====== */
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:18px 18px 8px}
+.section-head h2{font-size:1.05rem;margin:0;font-weight:800;color:var(--gov-blue-dark)}
+.section-head .bar{width:5px;height:20px;background:var(--gov-red);border-radius:3px;margin-right:9px}
+.section-head .ttl{display:flex;align-items:center}
+
+/* ====== Lưới ô lớn (card) ====== */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:6px 16px 8px}
+.card{
+  background:#fff;border-radius:var(--radius);padding:18px 14px 16px;border:1px solid var(--line);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;min-height:128px;
+  position:relative;overflow:hidden;transition:transform .12s ease;
+}
+.card:active{transform:scale(.97)}
+.card .badge{
+  width:56px;height:56px;border-radius:16px;display:grid;place-items:center;flex:0 0 auto;
+}
+.card .badge svg{width:32px;height:32px;color:#fff}
+.card h3{font-size:1.02rem;margin:0;font-weight:800;color:var(--ink);line-height:1.25}
+.card p{font-size:.82rem;margin:0;color:var(--ink-soft);font-weight:500}
+.card .arrow{position:absolute;right:12px;bottom:12px;color:var(--gov-blue);opacity:.4}
+.card .arrow svg{width:20px;height:20px}
+/* màu badge từng mục */
+.c1 .badge{background:linear-gradient(145deg,#1565C0,#0B57A4)}
+.c2 .badge{background:linear-gradient(145deg,#1976D2,#1565C0)}
+.c3 .badge{background:linear-gradient(145deg,#2E7D32,#1B5E20)}
+.c4 .badge{background:linear-gradient(145deg,#C62828,#B71C1C)}
+.c5 .badge{background:linear-gradient(145deg,#0097A7,#00838F)}
+.c6 .badge{background:linear-gradient(145deg,#558B2F,#33691E)}
+.c7 .badge{background:linear-gradient(145deg,#6A1B9A,#4A148C)}
+.c8 .badge{background:linear-gradient(145deg,#EF6C00,#E65100)}
+.c9 .badge{background:linear-gradient(145deg,#455A64,#37474F)}
+.c10 .badge{background:linear-gradient(145deg,#AD1457,#880E4F)}
+
+/* ====== Trang con ====== */
+.page{display:none;padding:0 0 12px;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.subhead{
+  background:linear-gradient(160deg,var(--gov-blue),var(--gov-blue-dark));color:#fff;
+  padding:16px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:30;
+  box-shadow:0 2px 10px rgba(6,62,120,.2);
+}
+.subhead .back{
+  width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.18);
+  display:grid;place-items:center;flex:0 0 auto;
+}
+.subhead .back svg{width:24px;height:24px;color:#fff}
+.subhead h2{margin:0;font-size:1.12rem;font-weight:800}
+.subhead .ico-lg{width:40px;height:40px;display:grid;place-items:center;margin-left:auto}
+.subhead .ico-lg svg{width:30px;height:30px;color:rgba(255,255,255,.85)}
+
+.list{padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+
+/* dòng liên hệ */
+.contact{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;
+  display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);
+}
+.contact .ava{width:50px;height:50px;border-radius:14px;background:var(--gov-blue-soft);display:grid;place-items:center;flex:0 0 auto}
+.contact .ava svg{width:28px;height:28px;color:var(--gov-blue)}
+.contact .info{flex:1;min-width:0}
+.contact .info b{display:block;font-size:1rem}
+.contact .info span{display:block;font-size:.85rem;color:var(--ink-soft)}
+.contact .info .telnum{display:flex;align-items:center;gap:5px;margin-top:5px;color:var(--gov-blue);font-weight:800;font-size:.98rem}
+.contact .info .telnum svg{width:16px;height:16px;flex:0 0 auto}
+.contact .call{
+  width:50px;height:50px;border-radius:50%;background:var(--ok);display:grid;place-items:center;flex:0 0 auto;
+}
+.contact .call svg{width:24px;height:24px;color:#fff}
+.contact .map{background:var(--gov-blue)}
+.contact .zalo{background:#0068FF}
+
+/* thẻ thủ tục / chính sách */
+.item{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);
+}
+.item summary{
+  list-style:none;display:flex;align-items:center;gap:12px;font-weight:800;font-size:1rem;cursor:pointer;
+}
+.item summary::-webkit-details-marker{display:none}
+.item .num{
+  width:38px;height:38px;border-radius:11px;background:var(--gov-blue-soft);color:var(--gov-blue);
+  display:grid;place-items:center;font-weight:800;flex:0 0 auto;
+}
+.item summary .chev{margin-left:auto;color:var(--gov-blue);transition:transform .2s}
+.item[open] summary .chev{transform:rotate(180deg)}
+.item .body{padding:14px 2px 2px;font-size:.95rem;color:var(--ink-soft);line-height:1.6}
+.item .body h4{color:var(--gov-blue-dark);margin:12px 0 6px;font-size:.95rem}
+.item .body ul{margin:6px 0;padding-left:20px}
+.item .body li{margin:4px 0}
+.dvc-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.dvc-btns a{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:11px;font-weight:700;font-size:.88rem;text-decoration:none}
+.dvc-btns a.dvc{background:var(--gov-blue);color:#fff}
+.dvc-btns a.dvc:active{background:var(--gov-blue-dark)}
+.dvc-btns a.vneid{background:#E2F5E9;color:var(--ok);border:1.5px solid #b9e4cb}
+.dvc-btns a svg{width:17px;height:17px;flex:0 0 auto}
+.sch-group{margin-top:14px}
+.sch-group h4{color:var(--gov-blue-dark);margin:0 0 8px;font-size:.92rem;border-bottom:2px solid var(--gov-blue-soft);padding-bottom:4px}
+.sch{background:#f7f9fc;border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:9px}
+.sch-name{font-weight:700;color:var(--ink);font-size:.95rem}
+.sch-addr{color:var(--ink-soft);font-size:.88rem;margin:2px 0 8px}
+.sch-btns{display:flex;flex-wrap:wrap;gap:7px}
+.sch-btns a{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:9px;font-weight:600;font-size:.82rem;text-decoration:none;background:var(--gov-blue-soft);color:var(--gov-blue)}
+.sch-btns a:active{background:#cfe0f0}
+.sch-btns a svg{width:15px;height:15px;flex:0 0 auto}
+.tag{display:inline-block;background:#FFF4D6;color:#8a6500;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:20px;margin-top:8px}
+.tag.green{background:#E2F5E9;color:var(--ok)}
+.tag.blue{background:var(--gov-blue-soft);color:var(--gov-blue)}
+
+/* thông báo */
+.notice{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gov-red);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.notice .meta{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.notice .meta .type{font-size:.74rem;font-weight:800;color:#fff;background:var(--gov-blue);padding:3px 10px;border-radius:6px}
+.notice .meta .date{font-size:.8rem;color:var(--ink-soft)}
+.notice b{font-size:1rem;display:block;margin-bottom:4px}
+.notice p{margin:0;font-size:.88rem;color:var(--ink-soft)}
+
+/* FAQ giống item */
+/* form góp ý */
+.form{padding:16px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:700;margin-bottom:7px;font-size:.95rem}
+.field input,.field select,.field textarea{
+  width:100%;border:2px solid var(--line);border-radius:12px;padding:13px 14px;font-size:1rem;
+  outline:0;background:#fff;color:var(--ink);font-family:inherit;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gov-blue)}
+.field textarea{min-height:120px;resize:vertical}
+.submit{
+  width:100%;background:var(--gov-blue);color:#fff;border:0;border-radius:14px;padding:16px;
+  font-size:1.08rem;font-weight:800;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.submit:active{background:var(--gov-blue-dark)}
+.submit svg{width:22px;height:22px}
+.form-note{background:var(--gov-blue-soft);border-radius:12px;padding:12px 14px;font-size:.85rem;color:var(--gov-blue-dark);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.form-note svg{width:20px;height:20px;flex:0 0 auto;color:var(--gov-blue)}
+.toast{
+  position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);
+  background:var(--ok);color:#fff;padding:14px 22px;border-radius:14px;font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.3s;z-index:200;max-width:90%;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* map placeholder */
+.mapbox{margin:14px 16px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.mapbox .ph{height:170px;background:
+  repeating-linear-gradient(45deg,#eaf2fb,#eaf2fb 16px,#e0ebf7 16px,#e0ebf7 32px);
+  display:grid;place-items:center;color:var(--gov-blue);position:relative}
+.mapbox .ph svg{width:48px;height:48px}
+.mapbox .cap{padding:14px 16px;display:flex;align-items:center;gap:12px}
+.mapbox .cap b{flex:1}
+.mapbox .cap a{background:var(--gov-blue);color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mapbox .cap a svg{width:18px;height:18px;color:#fff}
+
+/* ====== Thanh điều hướng dưới ====== */
+.tabbar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;
+  background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);
+  z-index:50;box-shadow:0 -2px 14px rgba(11,87,164,.08);
+}
+.tabbar button{
+  background:none;border:0;padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:var(--ink-soft);font-size:.72rem;font-weight:700;
+}
+.tabbar button svg{width:24px;height:24px}
+.tabbar button.on{color:var(--gov-blue)}
+.tabbar button.on svg{color:var(--gov-blue)}
+
+/* trợ năng: nút phóng to chữ */
+.fab-font{
+  position:fixed;right:14px;bottom:96px;z-index:60;background:var(--gov-blue);color:#fff;
+  border:0;border-radius:50%;width:54px;height:54px;box-shadow:0 6px 18px rgba(11,87,164,.4);
+  display:grid;place-items:center;font-weight:800;font-size:.7rem;line-height:1.05;
+}
+.fab-font b{font-size:1.15rem}
+
+.footer{padding:24px 18px 30px;text-align:center;color:var(--ink-soft);font-size:.78rem}
+.footer .line{width:40px;height:3px;background:var(--gov-red);border-radius:2px;margin:0 auto 12px}
+
+@media (min-width:420px){.sos b{font-size:1.7rem}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ============ TRANG CHỦ ============ -->
+  <div class="page active" id="home">
+    <header class="topbar">
+      <div class="row">
+        <div class="emblem-logo" aria-label="Logo Phường Chợ Quán"><svg width="100%" height="100%" style="display:block" viewBox="0 0 50 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M43.0272 0H6.98817C3.12871 0 0 3.12871 0 6.98817V57.0118C0 60.8713 3.12871 64 6.98817 64H43.0272C46.8866 64 50.0153 60.8713 50.0153 57.0118V6.98817C50.0153 3.12871 46.8866 0 43.0272 0Z" fill="#DD2731"/><path d="M41.6649 24.3546L42.2327 35.9163H42.1308L38.9258 24.3546H34.7682V39.5684H37.6092L37.0394 28.0068H37.1434L40.7539 39.5684H44.5059V24.3546H41.6649ZM12.7888 37.0331C13.1881 36.7752 13.5042 36.3614 13.733 35.7957C13.9618 35.2279 14.0782 34.4833 14.0782 33.564V28.3291C14.0782 27.0729 13.7767 26.0621 13.1756 25.2968C12.5745 24.5335 11.4535 24.1529 9.81878 24.1529C8.18405 24.1529 7.06303 24.5335 6.46196 25.2968C5.8609 26.0621 5.55933 27.0729 5.55933 28.3291V35.3901C5.55933 36.6463 5.85674 37.6571 6.45157 38.4204C7.04639 39.1857 8.15701 39.5664 9.77927 39.5664H14.0803V37.5365L11.362 37.6197V37.4782C11.9152 37.4366 12.3936 37.2869 12.7908 37.0331H12.7888ZM11.0355 35.9371C11.0355 36.3302 10.9232 36.613 10.7006 36.7898C10.4781 36.9645 10.1765 37.0519 9.79798 37.0519C9.41946 37.0519 9.14284 36.9645 8.92446 36.7898C8.70816 36.613 8.60001 36.3302 8.60001 35.9371V27.8029C8.60001 27.4098 8.70816 27.127 8.92446 26.9502C9.14284 26.7755 9.43194 26.6861 9.79798 26.6861C10.164 26.6861 10.4781 26.7755 10.7006 26.9502C10.9232 27.127 11.0355 27.4098 11.0355 27.8029V35.9371ZM16.4659 15.1785V17.5307C16.4659 17.9238 16.3515 18.2067 16.1206 18.3835C15.8918 18.5582 15.5528 18.6455 15.1077 18.6455C14.7417 18.6455 14.4505 18.5582 14.2342 18.3835C14.0179 18.2067 13.9098 17.9238 13.9098 17.5307V9.19277C13.9098 8.80176 14.0179 8.51683 14.2342 8.34213C14.4505 8.16534 14.7417 8.07799 15.1077 8.07799C15.4738 8.07799 15.7858 8.16534 16.0104 8.34213C16.2329 8.51683 16.3432 8.80176 16.3432 9.19277V11.7301L19.3859 11.3225V9.72104C19.3859 8.46483 19.0843 7.45405 18.4854 6.68867C17.8843 5.92538 16.7633 5.5427 15.1285 5.5427C13.4938 5.5427 12.3707 5.92746 11.7696 6.68867C11.1686 7.45405 10.8691 8.46483 10.8691 9.72104V16.9817C10.8691 18.24 11.1686 19.2528 11.7696 20.014C12.3707 20.7794 13.4917 21.16 15.1285 21.16C16.7654 21.16 17.9716 20.7794 18.5873 20.014C19.2008 19.2507 19.5086 18.24 19.5086 16.9817V15.1785H16.4659ZM20.7711 24.3546V36.1409C20.7711 36.534 20.6608 36.8189 20.4362 36.9936C20.2137 37.1704 19.9121 37.2578 19.5357 37.2578C19.1592 37.2578 18.8784 37.1704 18.6621 36.9936C18.4458 36.8189 18.3377 36.534 18.3377 36.1409V24.3546H15.2929V35.5939C15.2929 36.8501 15.5944 37.8609 16.1955 38.6263C16.7966 39.3896 17.9176 39.7702 19.5523 39.7702C21.187 39.7702 22.3101 39.3896 22.9112 38.6263C23.5102 37.8609 23.8118 36.8501 23.8118 35.5939V24.3546H20.769H20.7711ZM26.1037 5.74652V11.6885H23.6683V5.74652H20.6255V20.9604H23.6683V14.2259H26.1037V20.9604H29.1465V5.74652H26.1037ZM36.1971 21.8443C36.0556 21.6945 35.8497 21.6217 35.5814 21.6217H34.0777C33.8094 21.6217 33.6077 21.6945 33.4683 21.8443C33.329 21.9919 33.2583 22.1978 33.2583 22.4661V22.7032C33.2583 22.9611 33.3269 23.1691 33.4683 23.3251C33.6056 23.4811 33.8094 23.5601 34.0777 23.5601H35.5814C35.8497 23.5601 36.0556 23.4811 36.1971 23.3251C36.3426 23.1691 36.4133 22.9591 36.4133 22.7032V22.4661C36.4133 22.1978 36.3426 21.9899 36.1971 21.8443ZM25.0305 22.5826V24.0031L31.4613 22.5826V21.1621L25.0305 22.5826ZM32.6385 25.459C32.0291 24.5875 30.9122 24.1508 29.29 24.1508C27.6677 24.1508 26.5509 24.5875 25.9415 25.459C25.3321 26.3325 25.0285 27.4244 25.0285 28.7347V39.5664H28.0712V34.6975H30.5067V39.5664H33.5494V28.7347C33.5494 27.4223 33.2437 26.3304 32.6364 25.459H32.6385ZM30.5088 32.6697H28.0733V27.9048C28.0733 27.5014 28.1814 27.1956 28.3978 26.9918C28.6161 26.788 28.9052 26.6861 29.2713 26.6861C29.6373 26.6861 29.9514 26.788 30.1739 26.9918C30.3965 27.1936 30.5088 27.4993 30.5088 27.9048V32.6697ZM38.516 7.40829L40.0988 5.82763L39.0859 4.83348L37.603 6.31639C36.9583 5.80267 35.9641 5.54478 34.6206 5.54478C32.9837 5.54478 31.8648 5.92954 31.2637 6.69075C30.6647 7.45612 30.3611 8.46483 30.3611 9.72312V16.9837C30.3611 18.242 30.6647 19.2549 31.2637 20.0161C31.8648 20.7815 32.9858 21.1621 34.6206 21.1621C36.2553 21.1621 37.3784 20.7815 37.9774 20.0161C38.5784 19.2528 38.88 18.242 38.88 16.9837V9.72312C38.88 8.73729 38.697 7.90536 38.3289 7.22527L38.514 7.40829H38.516ZM35.8393 17.5328C35.8393 17.9238 35.7291 18.2088 35.5066 18.3855C35.2819 18.5602 34.9804 18.6476 34.6039 18.6476C34.2275 18.6476 33.9467 18.5602 33.7304 18.3855C33.5141 18.2088 33.4059 17.9238 33.4059 17.5328V9.19485C33.4059 8.80384 33.5141 8.51891 33.7304 8.34213C33.9467 8.16742 34.2379 8.08007 34.6039 8.08007C34.97 8.08007 35.2819 8.16742 35.5066 8.34213C35.7291 8.51891 35.8393 8.80384 35.8393 9.19485V17.5328Z" fill="#FFCF34"/><path d="M32.2121 59.0022C31.4343 58.8961 31.3241 59.7447 30.8291 59.7759C30.5504 59.7905 30.0658 59.5284 29.7143 59.491C27.6054 59.2601 24.39 59.2081 22.2602 59.3204C21.5198 59.3579 19.987 59.8071 19.4463 59.7738C18.9492 59.7426 18.554 58.5072 17.7325 59.1499C17.017 59.7093 17.8864 60.9052 18.3627 61.3503C19.4047 62.332 20.168 61.1361 21.3202 61.0259C23.0943 60.8491 27.1915 60.8428 28.9531 61.0342C29.706 61.1153 30.5629 61.7954 31.1078 61.7663C32.1768 61.7101 33.5723 59.1936 32.2121 59.0043V59.0022Z" fill="white"/><path d="M32.2121 59.0022C31.4343 58.8961 31.3241 59.7447 30.8291 59.7759C30.5504 59.7905 30.0658 59.5284 29.7143 59.491C27.6054 59.2601 24.39 59.2081 22.2602 59.3204C21.5198 59.3579 19.987 59.8071 19.4463 59.7738C18.9492 59.7426 18.554 58.5072 17.7325 59.1499C17.017 59.7093 17.8864 60.9052 18.3627 61.3503C19.4047 62.332 20.168 61.1361 21.3202 61.0259C23.0943 60.8491 27.1915 60.8428 28.9531 61.0342C29.706 61.1153 30.5629 61.7954 31.1078 61.7663C32.1768 61.7101 33.5723 59.1936 32.2121 59.0043V59.0022Z" fill="white"/><path d="M31.7047 52.0931C28.2584 51.5107 28.3666 54.3206 25.7876 54.6616C22.3684 55.113 22.5369 52.6047 20.4571 52.1347C18.5187 51.6937 16.1664 52.6213 15.9418 54.7802C15.5258 58.7693 21.1538 59.3204 20.7711 55.8679C20.6026 54.3538 18.344 53.7382 18.4355 55.2357C18.475 55.9158 19.1364 55.8367 19.2113 56.4149C17.772 56.8662 16.9255 55.1795 18.0174 54.1334C19.883 52.351 21.1954 55.0859 22.4412 55.7556C23.818 56.494 26.5447 56.4856 27.9132 55.6995C28.8845 55.1421 29.394 53.7465 30.6731 53.6197C31.5737 53.5344 32.8569 54.4058 32.7529 55.3896C32.6801 56.1113 31.557 57.0035 31.0454 56.182C31.7047 55.7868 32.0895 55.2731 31.5882 54.5431C29.186 53.7028 28.612 57.7564 30.9747 58.1162C34.9658 58.7277 35.5815 52.7482 31.7047 52.0931Z" fill="white"/><path d="M31.7047 52.0931C28.2584 51.5107 28.3666 54.3206 25.7876 54.6616C22.3684 55.113 22.5369 52.6047 20.4571 52.1347C18.5187 51.6937 16.1664 52.6213 15.9418 54.7802C15.5258 58.7693 21.1538 59.3204 20.7711 55.8679C20.6026 54.3538 18.344 53.7382 18.4355 55.2357C18.475 55.9158 19.1364 55.8367 19.2113 56.4149C17.772 56.8662 16.9255 55.1795 18.0174 54.1334C19.883 52.351 21.1954 55.0859 22.4412 55.7556C23.818 56.494 26.5447 56.4856 27.9132 55.6995C28.8845 55.1421 29.394 53.7465 30.6731 53.6197C31.5737 53.5344 32.8569 54.4058 32.7529 55.3896C32.6801 56.1113 31.557 57.0035 31.0454 56.182C31.7047 55.7868 32.0895 55.2731 31.5882 54.5431C29.186 53.7028 28.612 57.7564 30.9747 58.1162C34.9658 58.7277 35.5815 52.7482 31.7047 52.0931Z" fill="white"/><path d="M25.1179 52.925C23.5788 52.925 22.3746 51.9516 22.3746 50.7079C22.3746 50.3419 22.672 50.0444 23.0381 50.0444C23.4041 50.0444 23.7016 50.3419 23.7016 50.7079C23.7016 51.1301 24.2839 51.6002 25.12 51.6002C25.9561 51.6002 26.5384 51.1301 26.5384 50.7079C26.5384 50.3419 26.8358 50.0444 27.2019 50.0444C27.5679 50.0444 27.8653 50.3419 27.8653 50.7079C27.8653 51.9516 26.6611 52.925 25.1221 52.925H25.1179Z" fill="white"/><path d="M41.8646 50.9242C41.3966 50.9242 41.016 51.3048 41.016 51.7707C41.016 52.2366 41.3966 52.6172 41.8646 52.6172C42.8816 52.6172 43.7073 53.4429 43.7073 54.4599C43.7073 55.4769 42.8816 56.3026 41.8646 56.3026C39.3272 56.3026 37.5261 54.1666 35.935 52.2823C35.4359 51.6917 34.9658 51.1322 34.4854 50.6538C32.077 48.2454 28.8034 49.6639 28.6661 49.7262C28.4581 49.8178 28.3 49.9862 28.2189 50.1963C28.1378 50.4063 28.1441 50.6372 28.2356 50.8452C28.4269 51.2715 28.9281 51.465 29.3545 51.2757C29.3774 51.2653 31.7026 50.2712 33.2874 51.8539C33.7159 52.2823 34.1651 52.8148 34.6393 53.3763C36.376 55.4353 38.539 57.9977 41.8646 57.9977C43.8154 57.9977 45.4023 56.4108 45.4023 54.4599C45.4023 52.509 43.8154 50.9221 41.8646 50.9221V50.9242Z" fill="white"/><path d="M37.6779 46.2051C37.6467 46.1406 36.8792 44.6453 35.3547 44.1919C34.4542 43.9256 33.5141 44.0712 32.5636 44.6245C31.4904 45.2505 30.8914 45.8765 30.4089 46.3798C29.7184 47.1036 29.3711 47.4655 27.8674 47.4655C27.3849 47.4655 26.9918 47.0703 26.9918 46.5857C26.9918 46.1011 27.3849 45.7101 27.8674 45.7101C28.3499 45.7101 28.716 45.3295 28.716 44.8616C28.716 44.3936 28.3354 44.0151 27.8674 44.0151C26.449 44.0151 25.2968 45.1694 25.2968 46.5857C25.2968 48.0021 26.4178 49.121 27.7759 49.1543C27.8092 49.1585 27.8383 49.1585 27.8674 49.1585C30.0949 49.1585 30.8415 48.3764 31.6443 47.5383C32.0707 47.0932 32.5553 46.5899 33.4143 46.0907C33.9529 45.7788 34.4271 45.6893 34.866 45.8141C35.6813 46.0533 36.1596 46.958 36.1659 46.9726C36.2678 47.1743 36.4425 47.322 36.6567 47.3927C36.8709 47.4634 37.1018 47.4447 37.3014 47.3428C37.7195 47.1327 37.8859 46.6211 37.6758 46.203L37.6779 46.2051Z" fill="white"/><path d="M8.19658 50.9242C8.66453 50.9242 9.04514 51.3048 9.04514 51.7707C9.04514 52.2366 8.66453 52.6172 8.19658 52.6172C7.17955 52.6172 6.35386 53.4429 6.35386 54.4599C6.35386 55.4748 7.17955 56.3026 8.19658 56.3026C10.7339 56.3026 12.5351 54.1666 14.1261 52.2823C14.6253 51.6917 15.0953 51.1322 15.5758 50.6538C17.9842 48.2454 21.2578 49.6639 21.3951 49.7262C21.603 49.8178 21.7611 49.9862 21.8422 50.1963C21.9233 50.4063 21.9171 50.6372 21.8256 50.8452C21.6342 51.2715 21.133 51.465 20.7066 51.2757C20.6838 51.2653 18.3585 50.2712 16.7737 51.8539C16.3453 52.2823 15.896 52.8148 15.4218 53.3763C13.6852 55.4353 11.5222 57.9977 8.19658 57.9977C6.24571 57.9977 4.65881 56.4108 4.65881 54.4599C4.65881 52.509 6.24571 50.9221 8.19658 50.9221V50.9242Z" fill="white"/><path d="M12.3832 46.2051C12.4144 46.1406 13.1818 44.6453 14.7063 44.1919C15.6069 43.9256 16.547 44.0712 17.4974 44.6245C18.5706 45.2505 19.1696 45.8765 19.6521 46.3798C20.3426 47.1036 20.69 47.4655 22.1937 47.4655C22.6762 47.4655 23.0693 47.0703 23.0693 46.5857C23.0693 46.1011 22.6762 45.7101 22.1937 45.7101C21.7111 45.7101 21.3451 45.3295 21.3451 44.8616C21.3451 44.3936 21.7257 44.0151 22.1937 44.0151C23.6121 44.0151 24.7643 45.1694 24.7643 46.5857C24.7643 47.9667 23.6433 49.121 22.2852 49.1543C22.2519 49.1585 22.2228 49.1585 22.1937 49.1585C19.9662 49.1585 19.2195 48.3764 18.4167 47.5383C17.9904 47.0932 17.5058 46.5899 16.6468 46.0907C16.1081 45.7788 15.6339 45.6893 15.1951 45.8141C14.3798 46.0533 13.9014 46.958 13.8952 46.9726C13.7933 47.1743 13.6186 47.322 13.4044 47.3927C13.1902 47.4634 12.9593 47.4447 12.7596 47.3428C12.3416 47.1327 12.1752 46.6211 12.3853 46.203L12.3832 46.2051Z" fill="white"/></svg></div>
+        <div class="brand">
+          <h1>Khu phố 15 – Phường Chợ Quán</h1>
+          <p>Cẩm nang điện tử · Dân vận khéo · QR kết nối Chính quyền – Nhân dân</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="search">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="q" type="search" placeholder="Tìm thủ tục, số điện thoại, chính sách…" aria-label="Tìm kiếm">
+      </div>
+    </div>
+
+    <!-- Nút khẩn cấp -->
+    <div class="sos">
+      <a class="e1" href="tel:113">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z"/></svg></div>
+        <b>113</b><span>Công an</span>
+      </a>
+      <a class="e2" href="tel:115">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+        <b>115</b><span>Cấp cứu</span>
+      </a>
+      <a class="e3" href="tel:114">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8 7 6 10 6 14a6 6 0 0012 0c0-4-2-7-6-12z"/></svg></div>
+        <b>114</b><span>Cứu hỏa</span>
+      </a>
+      <a class="e4" href="tel:111">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0112 5a5 5 0 019.5 7c-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+        <b>111</b><span>Bảo vệ trẻ em</span>
+      </a>
+      <a class="e5" href="tel:112">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg></div>
+        <b>112</b><span>Sự cố, thiên tai</span>
+      </a>
+    </div>
+
+    <div class="section-head">
+      <div class="ttl"><span class="bar"></span><h2>Chọn mục bạn cần</h2></div>
+    </div>
+
+    <div class="grid" id="grid">
+      <!-- cards inserted by JS để dễ quản lý -->
+    </div>
+
+    <div style="padding:6px 16px 4px">
+      <a href="https://phuongchoquan.vn" target="_blank" style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)">
+        <div style="width:44px;height:44px;border-radius:12px;background:var(--gov-blue-soft);display:grid;place-items:center;flex:0 0 auto;color:var(--gov-blue)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+        </div>
+        <div style="flex:1"><b style="font-size:1rem">Cổng thông tin điện tử phường</b><br><span style="font-size:.85rem;color:var(--gov-blue)">phuongchoquan.vn</span></div>
+        <span style="color:var(--gov-blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="20" height="20"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+    </div>
+
+    <div class="footer">
+      <div class="line"></div>
+      <p><b>Khu phố 15 – Phường Chợ Quán</b><br>Mô hình “Dân vận khéo – Móc khóa QR”<br>Phục vụ Nhân dân · Cập nhật 06/2026</p>
+    </div>
+  </div>
+
+  <!-- ============ 1. DANH BẠ ============ -->
+  <div class="page" id="p1">
+    <div class="subhead"><button class="back" onclick="go('home')" aria-label="Quay lại"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Danh bạ liên hệ</h2></div>
+    <div class="list" id="list1"></div>
+  </div>
+
+  <!-- ============ 2. THỦ TỤC ============ -->
+  <div class="page" id="p2">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Thủ tục hành chính</h2></div>
+    <div class="list" id="list2"></div>
+  </div>
+
+  <!-- ============ 3. AN SINH ============ -->
+  <div class="page" id="p3">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>An sinh xã hội</h2></div>
+    <div class="list" id="list3"></div>
+  </div>
+
+  <!-- ============ 5. Y TẾ ============ -->
+  <div class="page" id="p5">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Y tế – Sức khỏe</h2></div>
+    <div class="list" id="list5"></div>
+  </div>
+
+  <!-- ============ 6. ĐÔ THỊ ============ -->
+  <div class="page" id="p6">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Đô thị – Môi trường</h2></div>
+    <div class="list" id="list6"></div>
+  </div>
+
+  <!-- ============ 7. GIÁO DỤC ============ -->
+  <div class="page" id="p7">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Giáo dục – Thanh thiếu nhi</h2></div>
+    <div class="list" id="list7"></div>
+  </div>
+
+  <!-- ============ 8. ĐỊA CHỈ ============ -->
+  <div class="page" id="p8">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Địa chỉ cần biết</h2></div>
+    <div id="list8"></div>
+  </div>
+
+  <!-- ============ 9. FAQ ============ -->
+  <div class="page" id="p9">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Câu hỏi thường gặp</h2></div>
+    <div class="list" id="list9"></div>
+  </div>
+
+  <!-- ============ 10. GÓP Ý ============ -->
+  <div class="page" id="p10">
+    <div class="subhead"><button class="back" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Góp ý – Kiến nghị</h2></div>
+    <div class="form">
+      <div class="form-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+        <span>Nhấn nút bên dưới để gửi phản ánh, góp ý tới UBND Phường Chợ Quán. Phản ánh của bạn sẽ được cán bộ tiếp nhận và xử lý.</span>
+      </div>
+      <!-- 👉 ĐỔI LINK GOOGLE FORM Ở DÒNG DƯỚI: thay phần trong href="..." bằng link form mới -->
+      <a class="submit" href="https://forms.gle/5ePGZ2Tq5mhW82Xs9" target="_blank" style="text-decoration:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Mở phiếu góp ý
+      </a>
+      <p style="text-align:center;color:var(--ink-soft);font-size:.85rem;margin-top:16px">Phiếu mở trên Google Biểu mẫu, điền nhanh trong 1 phút.</p>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- Trợ năng phóng to chữ -->
+<button class="fab-font" id="fontBtn" onclick="toggleFont()" aria-label="Phóng to chữ">A<b>+</b></button>
+
+<!-- Thanh điều hướng -->
+<nav class="tabbar">
+  <button class="on" id="t-home" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Trang chủ</button>
+  <button onclick="go('p1')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A18 18 0 013 6a2 2 0 012-2z"/></svg>Danh bạ</button>
+  <button onclick="go('p2')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg>Thủ tục</button>
+  <button onclick="go('p10')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Góp ý</button>
+</nav>
+
+<script>
+/* =====================================================================
+   👉👉👉  KHU VỰC SỬA NỘI DUNG  👈👈👈
+   ---------------------------------------------------------------------
+   CHỈ CẦN SỬA CHỮ NẰM TRONG DẤU NHÁY '...'. KHÔNG xóa dấu phẩy, ngoặc.
+   Sửa xong bấm "Commit/Lưu" trên GitHub là web tự cập nhật sau ~1 phút.
+
+   Ví dụ đổi số điện thoại Trưởng khu phố:
+     Tìm dòng:  {n:'Trưởng Khu phố 15', s:'(đang cập nhật tên & SĐT)', ... tel:''}
+     Sửa thành: {n:'Trưởng Khu phố 15', s:'Ông Nguyễn Văn A',        ... tel:'0901234567'}
+     (điền số vào trong tel:'...' là nút gọi tự hiện ra)
+
+   Ví dụ thêm 1 liên hệ mới: copy nguyên 1 dòng, dán xuống dưới, sửa chữ.
+   ===================================================================== */
+/* ============ DỮ LIỆU MẪU (phường tự cập nhật) ============ */
+const ICON = {
+  phone:'<path d="M5 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A18 18 0 013 6a2 2 0 012-2z"/>',
+  doc:'<path d="M6 2h9l5 5v15H6z"/><path d="M9 12h7M9 16h7M9 8h3"/>',
+  heart:'<path d="M12 21s-7-4.5-9.5-9A5 5 0 0112 5a5 5 0 019.5 7c-2.5 4.5-9.5 9-9.5 9z"/>',
+  bell:'<path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/>',
+  health:'<path d="M12 5v14M5 12h14"/>',
+  city:'<path d="M3 21h18M5 21V7l5-4 5 4v14M9 9h2M9 13h2M14 13h1"/>',
+  edu:'<path d="M22 10L12 5 2 10l10 5 10-5zM6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/>',
+  pin:'<path d="M12 22s7-7 7-12a7 7 0 00-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
+  faq:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 115 .2c0 1.5-2 2-2 3.5M12 17h.01"/>',
+  chat:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
+  call:'<path d="M5 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A18 18 0 013 6a2 2 0 012-2z"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  shield:'<path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z"/>',
+  cross:'<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>',
+  bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  water:'<path d="M12 2C8 7 6 10 6 14a6 6 0 0012 0c0-4-2-7-6-12z"/>',
+  map:'<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
+  star:'<path d="M12 2l2.6 6.3L21 9l-5 4.3L17.5 21 12 17.2 6.5 21 8 13.3 3 9l6.4-.7L12 2z"/>',
+  zalo:'<path d="M21 11.5a8.4 8.4 0 01-12.2 7.5L3 21l2.1-5.7A8.4 8.4 0 1121 11.5z"/><path d="M8.5 10h4l-4 4h4" stroke-width="1.6"/>',
+  web:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/>',
+  fb:'<path d="M14 8h2.5V4.5H14c-2.2 0-3.5 1.4-3.5 3.6V10H8v3.5h2.5V21H14v-7.5h2.6L17 10h-3V8.4c0-.3.3-.4.5-.4z"/>',
+  chev:'<path d="M6 9l6 6 6-6"/>'
+};
+function svg(p,w=2){return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`}
+
+/* ----- Ô trang chủ ----- */
+const CARDS = [
+  {id:'p1',c:'c1',t:'Danh bạ liên hệ',d:'Gọi nhanh phường, công an, y tế',i:ICON.phone},
+  {id:'p2',c:'c2',t:'Thủ tục hành chính',d:'Khai sinh, kết hôn, tạm trú…',i:ICON.doc},
+  {id:'p3',c:'c3',t:'An sinh xã hội',d:'Người cao tuổi, hộ nghèo, NCC',i:ICON.heart},
+  {id:'p5',c:'c5',t:'Y tế – Sức khỏe',d:'Tiêm chủng, BHYT, dịch bệnh',i:ICON.health},
+  {id:'p6',c:'c6',t:'Đô thị – Môi trường',d:'Lịch thu gom rác, phản ánh',i:ICON.city},
+  {id:'p7',c:'c7',t:'Giáo dục – Thiếu nhi',d:'Trường học, hoạt động hè',i:ICON.edu},
+  {id:'p8',c:'c8',t:'Địa chỉ cần biết',d:'Bản đồ, chỉ đường Google Maps',i:ICON.pin},
+  {id:'p9',c:'c9',t:'Câu hỏi thường gặp',d:'Giải đáp nhanh các thắc mắc',i:ICON.faq},
+  {id:'p10',c:'c10',t:'Góp ý – Kiến nghị',d:'Gửi phản ánh tới phường',i:ICON.chat},
+];
+document.getElementById('grid').innerHTML = CARDS.map(c=>`
+  <button class="card ${c.c}" data-search="${c.t} ${c.d}" onclick="go('${c.id}')">
+    <div class="badge">${svg(c.i)}</div>
+    <h3>${c.t}</h3><p>${c.d}</p>
+    <div class="arrow">${svg(ICON.chev)}</div>
+  </button>`).join('');
+
+/* ----- 1. Danh bạ ----- */
+const CONTACTS = [
+  {n:'Tổng đài / Liên hệ UBND phường',s:'Tiếp nhận phản ánh, hỏi đáp',i:ICON.phone,tel:'02838333333'},
+  {n:'Trung tâm Hành chính công',s:'53A–53B Trần Phú · Một cửa',i:ICON.doc,tel:'02838535455',map:1,addr:'53A Tran Phu Phuong Cho Quan TPHCM'},
+  {n:'Công an Phường',s:'26 Nguyễn Biểu, Khu phố 1 · Bộ phận 1 cửa',i:ICON.shield,tel:'02838354924',map:1,addr:'26 Nguyen Bieu Phuong Cho Quan TPHCM',zalo:'https://zalo.me/g/jhlngv064'},
+  {n:'Chủ tịch UBND phường',s:'Đ/c Nguyễn Võ Xuân Kỳ',i:ICON.user,tel:'0903923631'},
+  {n:'Trưởng Công an phường',s:'Đ/c Trịnh Khánh Hùng',i:ICON.shield,tel:'0987934567'},
+  {n:'Chỉ huy trưởng Quân sự phường',s:'Đ/c Nguyễn Tiến Sĩ',i:ICON.star,tel:'0777722025'},
+  {n:'Trưởng phòng Văn hóa – Xã hội',s:'Đ/c Nguyễn Xuân Thọ',i:ICON.heart,tel:'0907567986'},
+  {n:'Trưởng phòng Kinh tế – Hạ tầng – Đô thị',s:'Đ/c Phạm Trung Trực',i:ICON.city,tel:'0989370991'},
+  {n:'Chủ tịch Ủy ban MTTQ phường',s:'Đ/c Lê Tấn Tài',i:ICON.heart,tel:'0903322468'},
+  {n:'Trưởng Khu phố 15',s:'Bà Lê Thị Bạch Tuyết',i:ICON.user,tel:'0903974478'},
+  {n:'Điện lực (EVNHCMC)',s:'Sự cố điện 24/24',i:ICON.bolt,tel:'1900545454'},
+  {n:'Cấp nước (SAWACO)',s:'Sự cố nước · ghi chỉ số',i:ICON.water,tel:'1900999997'},
+];
+/* hàm tách số cho dễ đọc: 0903974478 -> 0903 974 478 */
+function fmtTel(t){
+  if(!t) return '';
+  if(t.startsWith('1900')){
+    var r=t.slice(4);
+    if(r.length===6) return '1900 '+r.replace(/(\d{3})(\d{3})/,'$1 $2'); // 1900 999 997
+    return '1900 '+r; // 1900 545454
+  }
+  if(t.startsWith('028')) return t.replace(/(028)(\d{4})(\d+)/,'($1) $2 $3');
+  if(t.length===10) return t.replace(/(\d{4})(\d{3})(\d{3})/,'$1 $2 $3');
+  return t;
+}
+// Tạo danh sách "thẻ địa điểm" (trường học, bưu điện…) có nút gọi/bản đồ/website
+function schoolBlock(list){
+  return list.map(s=>`
+  <div class="sch">
+    <div class="sch-name">${s.n}</div>
+    <div class="sch-addr">${s.a}</div>
+    <div class="sch-btns">
+      ${s.tel?`<a href="tel:${s.tel}">${svg(ICON.phone)} ${fmtTel(s.tel)}</a>`:''}
+      <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.map)}" target="_blank">${svg(ICON.map)} Bản đồ</a>
+      ${s.web?`<a href="${s.web}" target="_blank">${svg(ICON.web)} Website</a>`:''}
+    </div>
+  </div>`).join('');
+}
+document.getElementById('list1').innerHTML = CONTACTS.map(c=>`
+  <div class="contact" data-search="${c.n} ${c.s} ${c.tel||''}">
+    <div class="ava">${svg(c.i)}</div>
+    <div class="info"><b>${c.n}</b><span>${c.s}</span>${c.tel?`<a href="tel:${c.tel}" class="telnum">${svg(ICON.call)} ${fmtTel(c.tel)}</a>`:''}</div>
+    ${c.zalo?`<a class="call zalo" href="${c.zalo}" target="_blank" aria-label="Zalo ${c.n}">${svg(ICON.zalo)}</a>`:''}
+    ${c.map?`<a class="call map" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.addr||c.n)}" target="_blank" aria-label="Chỉ đường">${svg(ICON.pin)}</a>`:''}
+    ${c.tel?`<a class="call" href="tel:${c.tel}" aria-label="Gọi ${c.n}">${svg(ICON.call)}</a>`:''}
+  </div>`).join('');
+
+/* ----- 2. Thủ tục ----- */
+const _docSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17" style="flex:0 0 auto"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg>';
+// Tạo nút "Mở trên Cổng Dịch vụ công" tới đúng thủ tục theo mã (ma). Nếu không có mã, trỏ về trang chủ DVC.
+function dvcBtn(ma){
+  const url = ma ? `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-hanh-chinh.html?ma_thu_tuc=${ma}` : 'https://dichvucong.gov.vn';
+  return `<div class="dvc-btns"><a class="dvc" href="${url}" target="_blank">${_docSvg} Mở trên Cổng Dịch vụ công</a></div>`;
+}
+const TTHC = [
+  {t:'Bộ phận 1 cửa Công an phường',time:'T2–T6: 7h30–11h30, 13h–17h · T7: 7h30–11h30',b:`<h4>Địa chỉ:</h4>Số 26 đường Nguyễn Biểu, Khu phố 1, Phường Chợ Quán.<h4>Tiếp nhận các lĩnh vực:</h4><ul><li><b>Giao thông:</b> đăng ký, quản lý phương tiện; cấp đổi GPLX</li><li><b>Cư trú:</b> thường trú, tạm trú, tạm vắng, lưu trú</li><li><b>Định danh điện tử:</b> VNeID mức độ 2</li><li>Các thủ tục khác thuộc công an phường</li></ul>Lưu ý: đến đúng địa chỉ và trong giờ làm việc.`,tag:'Địa chỉ mới'},
+  {t:'Cấp thẻ căn cước (từ đủ 14 tuổi)',time:'7 ngày làm việc',b:`Áp dụng cho: cấp lần đầu, hoặc đổi từ CMND/CCCD mã vạch/CCCD gắn chip sang thẻ căn cước mới; và các mốc đổi định kỳ (14, 25, 40, 60 tuổi).<h4>Cách làm:</h4><ul><li>Nộp online qua Cổng Dịch vụ công hoặc app <b>VNeID</b> (đăng nhập, chọn thủ tục, đặt lịch hẹn).</li><li>Đến cơ quan Công an theo lịch để lấy vân tay, ảnh khuôn mặt, mống mắt.</li></ul>Người từ đủ 14 tuổi thực hiện tại Công an cấp tỉnh; người dưới 14 tuổi làm tại Công an phường.<div class="dvc-btns"><a class="dvc" href="https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=2.000200" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17" style="flex:0 0 auto"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg> Mở trên Cổng Dịch vụ công</a><a class="vneid" href="https://vneid.gov.vn" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17" style="flex:0 0 auto"><path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z"/></svg> Dùng app VNeID</a></div>`,tag:'Làm online'},
+  {t:'Cấp lại thẻ căn cước (mất, hư hỏng)',time:'7 ngày làm việc',b:`Áp dụng khi: thẻ căn cước bị mất, hoặc hư hỏng không dùng được.<h4>Cách làm:</h4><ul><li>Nộp online qua Cổng Dịch vụ công hoặc app <b>VNeID</b> (đăng nhập, chọn "Cấp lại thẻ căn cước").</li><li>Hệ thống dùng lại vân tay, ảnh đã thu nhận lần gần nhất nên thường không phải đến lấy lại sinh trắc học.</li></ul>Có thể chọn nhận kết quả tại nhà qua bưu chính.<div class="dvc-btns"><a class="dvc" href="https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=2.001194" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17" style="flex:0 0 auto"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg> Mở trên Cổng Dịch vụ công</a><a class="vneid" href="https://vneid.gov.vn" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17" style="flex:0 0 auto"><path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z"/></svg> Dùng app VNeID</a></div>`,tag:'Làm online'},
+  {t:'Đăng ký khai sinh',time:'Trong ngày · Miễn phí',b:`<h4>Hồ sơ cần:</h4><ul><li>Giấy chứng sinh (bản chính)</li><li>CCCD cha/mẹ</li><li>Giấy đăng ký kết hôn (nếu có)</li></ul><h4>Nơi nộp:</h4>Bộ phận Một cửa – UBND phường, hoặc nộp online qua Cổng DVC Quốc gia.${dvcBtn('1.001193')}`,tag:'Làm online'},
+  {t:'Đăng ký khai tử',time:'Trong ngày · Miễn phí',b:`<h4>Hồ sơ cần:</h4><ul><li>Giấy báo tử/giấy xác nhận của cơ sở y tế</li><li>CCCD người đi khai</li></ul>Thực hiện trong 15 ngày kể từ ngày mất. Có thể nộp online qua Cổng DVC (chọn lĩnh vực Hộ tịch → Đăng ký khai tử).${dvcBtn('')}`,tag:'Làm online'},
+  {t:'Đăng ký kết hôn',time:'Trong ngày · Miễn phí',b:`<h4>Hồ sơ cần:</h4><ul><li>Tờ khai đăng ký kết hôn</li><li>CCCD hai bên</li><li>Giấy xác nhận tình trạng hôn nhân</li></ul>Hai bên có mặt cùng ký.${dvcBtn('1.000894')}`,tag:'Làm online'},
+  {t:'Đăng ký tạm trú, tạm vắng',time:'1–3 ngày làm việc',b:`<h4>Tạm trú cần:</h4><ul><li>CCCD/định danh điện tử (VNeID)</li><li>Giấy tờ chỗ ở hợp pháp (hợp đồng thuê…)</li></ul>Khai báo qua ứng dụng <b>VNeID</b> hoặc tại Công an phường.<div class="dvc-btns"><a class="vneid" href="https://vneid.gov.vn" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17" style="flex:0 0 auto"><path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z"/></svg> Dùng app VNeID</a></div>`,tag:'Làm online'},
+  {t:'Chứng thực giấy tờ, chữ ký',time:'Trong ngày',b:`<h4>Mang theo:</h4><ul><li>Bản chính để đối chiếu</li><li>Bản sao cần chứng thực</li></ul>Lệ phí theo quy định (≈2.000đ/bản). Chứng thực bản sao điện tử có thể làm trên Cổng DVC.${dvcBtn('')}`,tag:'Làm trong ngày'},
+  {t:'Đăng ký hộ kinh doanh',time:'3 ngày làm việc',b:`<h4>Hồ sơ:</h4><ul><li>Giấy đề nghị đăng ký hộ kinh doanh</li><li>CCCD chủ hộ</li><li>Giấy tờ địa điểm kinh doanh</li></ul>Nộp tại UBND phường hoặc DVC trực tuyến.${dvcBtn('')}`,tag:'Làm online'},
+  {t:'Hồ sơ hưởng chính sách xã hội',time:'Theo từng diện',b:`<h4>Tùy diện đối tượng:</h4>Người cao tuổi, khuyết tật, hộ nghèo… Liên hệ cán bộ LĐ-TB&XH phường để được hướng dẫn hồ sơ cụ thể.`,tag:'Liên hệ cán bộ phường'},
+];
+document.getElementById('list2').innerHTML = TTHC.map((x,i)=>`
+  <details class="item" data-search="${(x.t+' '+x.b).replace(/<[^>]*>/g,' ').replace(/"/g,'')}">
+    <summary><span class="num">${i+1}</span><span>${x.t}</span><span class="chev">${svg(ICON.chev)}</span></summary>
+    <div class="body"><span class="tag blue">${x.time}</span> <span class="tag green">${x.tag}</span>${x.b}</div>
+  </details>`).join('');
+
+/* ----- 3. An sinh ----- */
+const ASXH = [
+  {t:'Nhóm Zalo Bảo trợ xã hội phường',b:`Tham gia nhóm Zalo để cập nhật thông tin chi trả trợ cấp, chính sách an sinh và được hỗ trợ trực tiếp.<br><br>👉 <a href="https://zalo.me/g/doiqmb670" target="_blank" style="color:var(--gov-blue);font-weight:700">Bấm vào đây để vào nhóm Zalo</a><br><br>Hoặc gọi: <a href="tel:02838329999" style="color:var(--gov-blue);font-weight:700">(028) 3832 9999</a>`},
+  {t:'Người cao tuổi – Trợ cấp hưu trí xã hội',b:`<b>Đối tượng:</b> công dân cư trú tại phường <b>từ đủ 75 tuổi</b> trở lên; hoặc <b>từ đủ 70 đến dưới 75 tuổi</b> thuộc hộ nghèo, hộ cận nghèo. Không hưởng lương hưu/trợ cấp BHXH hằng tháng, hoặc đang hưởng mức thấp hơn mức trợ cấp hưu trí xã hội.<br><br><b>Mức hưởng:</b> 650.000 đồng/tháng (theo mức của TP.HCM). Ngoài ra được <b>cấp thẻ BHYT miễn phí</b> và <b>hỗ trợ chi phí mai táng</b> khi qua đời.<br><br><b>Hồ sơ mang theo:</b> CCCD bản chính; mã số thẻ BHYT (nếu có); số tài khoản ngân hàng của người đề nghị (để nhận trợ cấp); văn bản đề nghị theo Mẫu số 01 (Nghị định 176/2025/NĐ-CP).<br><br><b>Nơi nộp:</b> Trung tâm Phục vụ Hành chính công phường (53A–53B Trần Phú), hoặc nộp online qua Cổng Dịch vụ công Quốc gia.<br><br>Người cao tuổi còn được chúc thọ, mừng thọ dịp Tết.`},
+  {t:'Người khuyết tật',b:`Xác định mức độ khuyết tật → hưởng trợ cấp hằng tháng, cấp thẻ BHYT, miễn/giảm giá vé dịch vụ công cộng. Liên hệ cán bộ LĐ-TB&XH phường.`},
+  {t:'Trẻ em',b:`Hỗ trợ trẻ em mồ côi, trẻ có hoàn cảnh đặc biệt. Tiêm chủng mở rộng miễn phí. Học bổng – tặng quà dịp 1/6, Trung thu.`},
+  {t:'Người lao động',b:`Tư vấn BHXH, BHTN. Giới thiệu việc làm. Hỗ trợ lao động tự do gặp khó khăn theo chương trình của TP.`},
+  {t:'Hộ nghèo, cận nghèo',b:`Cấp thẻ BHYT, miễn giảm học phí, hỗ trợ nhà ở, vay vốn ưu đãi NHCSXH. Đăng ký rà soát hộ nghèo tại khu phố.`},
+  {t:'Người có công',b:`Trợ cấp ưu đãi hằng tháng, điều dưỡng, hỗ trợ nhà ở, ưu đãi giáo dục cho thân nhân. Thăm hỏi dịp 27/7, Tết.`},
+];
+document.getElementById('list3').innerHTML = ASXH.map((x,i)=>`
+  <details class="item" data-search="${(x.t+' '+x.b).replace(/<[^>]*>/g,' ').replace(/"/g,'')}">
+    <summary><span class="num">${svg(ICON.heart)}</span><span>${x.t}</span><span class="chev">${svg(ICON.chev)}</span></summary>
+    <div class="body">${x.b}</div>
+  </details>`).join('');
+
+/* ----- 5. Y tế ----- */
+const YTE = [
+  {t:'Lịch tiêm chủng mở rộng',b:`Tiêm chủng cho trẻ tại Trạm Y tế phường <b>theo thông báo của Trạm Y tế</b> (không cố định thứ trong tuần). Theo dõi thông báo và mang theo sổ tiêm chủng của bé khi đi tiêm.`},
+  {t:'Phòng chống dịch bệnh',b:`Sốt xuất huyết: diệt lăng quăng, đậy kín lu nước. Tay chân miệng: rửa tay thường xuyên. Báo Trạm Y tế khi có ổ dịch.`},
+  {t:'Thông tin BHYT',b:`Gia hạn thẻ BHYT hộ gia đình tại các điểm bưu điện hoặc qua app <b>VssID</b>. Hộ nghèo, người cao tuổi thuộc diện được cấp thẻ miễn phí.`},
+  {t:'Điểm bán, gia hạn BHYT trong phường',b:`Có thể mua mới hoặc gia hạn thẻ BHYT hộ gia đình tại các bưu điện trên địa bàn:${schoolBlock([
+    {n:'Bưu điện Nguyễn Trãi',a:'49 Nguyễn Trãi · 7h30–17h (T2–T7)',tel:'02838369192',map:'Buu Dien Nguyen Trai 49 Nguyen Trai Phuong Cho Quan TPHCM'},
+    {n:'Bưu điện Lê Hồng Phong',a:'Đường Lê Hồng Phong',tel:'02839240324',map:'Buu Dien Le Hong Phong Phuong Cho Quan TPHCM'},
+  ])}<p style="margin-top:8px;font-size:.85rem;color:var(--ink-soft)">Mang theo CCCD và thông tin hộ gia đình. Nên gọi trước để hỏi giấy tờ cần thiết.</p>`},
+];
+document.getElementById('list5').innerHTML = YTE.map(x=>`
+  <details class="item" data-search="${(x.t+' '+x.b).replace(/<[^>]*>/g,' ').replace(/"/g,'')}">
+    <summary><span class="num">${svg(ICON.cross)}</span><span>${x.t}</span><span class="chev">${svg(ICON.chev)}</span></summary>
+    <div class="body">${x.b}</div>
+  </details>`).join('');
+
+/* ----- 6. Đô thị ----- */
+const DOTHI = [
+  {t:'Lịch thu gom rác',b:`Rác sinh hoạt: thu gom <b>hằng ngày 18h–20h</b>. Rác cồng kềnh: đăng ký với tổ vệ sinh khu phố. Phân loại rác tại nguồn.`,form:0},
+  {t:'Phản ánh hạ tầng',b:`Hư hỏng đường, hố ga, đèn chiếu sáng, cây xanh… gửi phản ánh kèm ảnh và địa chỉ cụ thể qua phiếu trực tuyến, hoặc liên hệ Trưởng Khu phố 15 / UBND phường trong mục Danh bạ.`,form:1},
+  {t:'Phản ánh môi trường',b:`Đổ rác sai nơi, ô nhiễm, tiếng ồn… gửi phản ánh qua phiếu trực tuyến để được xử lý kịp thời, hoặc liên hệ Danh bạ phường.`,form:1},
+];
+document.getElementById('list6').innerHTML = DOTHI.map(x=>`
+  <details class="item" data-search="${(x.t+' '+x.b).replace(/<[^>]*>/g,' ').replace(/"/g,'')}">
+    <summary><span class="num">${svg(ICON.city)}</span><span>${x.t}</span><span class="chev">${svg(ICON.chev)}</span></summary>
+    <div class="body">${x.b}${x.form?`<div class="dvc-btns"><a class="dvc" href="https://forms.gle/5ePGZ2Tq5mhW82Xs9" target="_blank">${svg(ICON.doc)} Gửi phản ánh trực tuyến</a></div>`:''}<br><br><button class="submit" style="padding:12px" onclick="go('p1')">Mở Danh bạ liên hệ</button></div>
+  </details>`).join('');
+
+/* ----- 7. Giáo dục ----- */
+const TRUONG = [
+  {c:'Mầm non', list:[
+    {n:'Mầm non Họa Mi 3',a:'285 An Dương Vương',tel:'02838359649',map:'Truong Mam Non Hoa Mi 3 285 An Duong Vuong Phuong Cho Quan TPHCM'},
+    {n:'Mầm non 1 (Cơ sở 2)',a:'81 Nguyễn Văn Cừ',tel:'02838382772',map:'Truong Mam Non 1 81 Nguyen Van Cu Phuong Cho Quan TPHCM'},
+    {n:'Mầm non Mai Anh',a:'118 Trần Bình Trọng',tel:'02838384109',map:'Truong Mam Non Mai Anh 118 Tran Binh Trong Phuong Cho Quan TPHCM'},
+  ]},
+  {c:'Tiểu học', list:[
+    {n:'Tiểu học Trần Bình Trọng',a:'Khu A · 120 Trần Bình Trọng (khu B)',map:'Truong Tieu Hoc Tran Binh Trong Quan 5 TPHCM'},
+    {n:'Tiểu học Lê Văn Tám',a:'144 Trần Phú',tel:'02838352805',map:'Truong Tieu Hoc Le Van Tam 144 Tran Phu Phuong Cho Quan TPHCM'},
+    {n:'Tiểu học Bàu Sen',a:'106 Nguyễn Trãi',tel:'02839235404',map:'Truong Tieu Hoc Bau Sen 106 Nguyen Trai Phuong Cho Quan TPHCM'},
+    {n:'Tiểu học Hàm Tử',a:'750–752 Võ Văn Kiệt',tel:'02839235799',map:'Truong Tieu Hoc Ham Tu 750 Vo Van Kiet Phuong Cho Quan TPHCM'},
+  ]},
+  {c:'THCS', list:[
+    {n:'THCS Ba Đình',a:'129 Phan Văn Trị',tel:'02839236949',map:'Truong THCS Ba Dinh 129 Phan Van Tri Phuong Cho Quan TPHCM'},
+  ]},
+  {c:'THPT', list:[
+    {n:'THPT Chuyên Lê Hồng Phong',a:'235 Nguyễn Văn Cừ',tel:'02838398506',map:'Truong THPT Chuyen Le Hong Phong 235 Nguyen Van Cu Phuong Cho Quan TPHCM',web:'https://thpt-lehongphong.edu.vn'},
+  ]},
+  {c:'Đại học', list:[
+    {n:'Đại học Sài Gòn (SGU)',a:'273 An Dương Vương',tel:'02838354409',map:'Truong Dai Hoc Sai Gon 273 An Duong Vuong Phuong Cho Quan TPHCM',web:'https://www.sgu.edu.vn'},
+    {n:'Đại học Sư phạm TP.HCM (HCMUE)',a:'280 An Dương Vương',tel:'02838352020',map:'Truong Dai Hoc Su Pham TPHCM 280 An Duong Vuong Phuong Cho Quan TPHCM',web:'https://hcmue.edu.vn'},
+    {n:'Đại học Khoa học Tự nhiên (HCMUS)',a:'227 Nguyễn Văn Cừ',tel:'02862884499',map:'Truong Dai Hoc Khoa Hoc Tu Nhien 227 Nguyen Van Cu Phuong Cho Quan TPHCM',web:'https://hcmus.edu.vn'},
+  ]},
+];
+const truongHTML = TRUONG.map(g=>`<div class="sch-group"><h4>${g.c}</h4>${schoolBlock(g.list)}</div>`).join('');
+
+const GD = [
+  {t:'Thông tin trường học',b:`Các trường trên địa bàn phường Chợ Quán (bấm <b>Bản đồ</b> để chỉ đường, hoặc gọi trực tiếp):${truongHTML}<p style="margin-top:10px;font-size:.85rem;color:var(--ink-soft)">Tuyển sinh đầu cấp theo tuyến – xem thông báo của Phòng GD&ĐT và nhà trường.</p>`},
+  {t:'Hoạt động hè',b:`Sinh hoạt hè tại Nhà văn hóa và các điểm sinh hoạt: võ thuật, bơi lội, năng khiếu, kỹ năng. Theo dõi thông báo và đăng ký qua các kênh:<div class="dvc-btns"><a class="dvc" href="https://www.facebook.com/profile.php?id=61590327373576" target="_blank">${svg(ICON.fb)} Trang Facebook hoạt động hè</a><a class="vneid" href="https://zalo.me/g/fpqsis632" target="_blank">${svg(ICON.chat)} Nhóm Zalo sinh hoạt hè</a></div>`},
+  {t:'Hoạt động Đoàn – Hội',b:`Sinh hoạt Chi đoàn, Hội LHTN, Đội thiếu niên; tham gia tình nguyện, chuyển đổi số cộng đồng.<h4>Liên hệ:</h4>Đ/c <b>Phạm Hà Yến Như</b> – <a href="tel:0775566621" style="color:var(--gov-blue);font-weight:700">0775 566 621</a><div class="dvc-btns"><a class="dvc" href="https://www.facebook.com/share/18zV8MZjef/" target="_blank">${svg(ICON.fb)} Đoàn phường Chợ Quán</a><a class="dvc" href="https://www.facebook.com/profile.php?id=100080379024916" target="_blank">${svg(ICON.fb)} Thanh thiếu nhi Khu phố 15</a></div>`},
+];
+document.getElementById('list7').innerHTML = GD.map(x=>`
+  <details class="item" data-search="${(x.t+' '+x.b).replace(/<[^>]*>/g,' ').replace(/"/g,'')}">
+    <summary><span class="num">${svg(ICON.edu)}</span><span>${x.t}</span><span class="chev">${svg(ICON.chev)}</span></summary>
+    <div class="body">${x.b}</div>
+  </details>`).join('');
+
+/* ----- 8. Địa chỉ ----- */
+const DIACHI = [
+  {n:'Đảng ủy – HĐND – UBND phường',a:'211 An Dương Vương'},
+  {n:'Ủy ban MTTQ và các đoàn thể',a:'180 Trần Bình Trọng'},
+  {n:'Trung tâm Hành chính công · Phòng Văn hóa – Xã hội',a:'53A–53B Trần Phú'},
+  {n:'Phòng Kinh tế, Hạ tầng và Đô thị',a:'76–78 Trần Bình Trọng'},
+  {n:'Ban Chỉ huy Công an phường',a:'258F Lê Hồng Phong'},
+  {n:'Bộ phận 1 cửa Công an phường',a:'26 Nguyễn Biểu, Khu phố 1'},
+  {n:'Ban Chỉ huy Quân sự phường',a:'97 Trần Bình Trọng'},
+];
+document.getElementById('list8').innerHTML = DIACHI.map(x=>`
+  <div class="mapbox" data-search="${(x.n+' '+x.a).replace(/<[^>]*>/g,' ').replace(/"/g,'')}">
+    <div class="ph">${svg(ICON.map,1.6)}</div>
+    <div class="cap"><b>${x.n}<br><span style="font-weight:500;color:var(--ink-soft);font-size:.85rem">${x.a}</span></b>
+    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.a.split('(')[0]+' Phuong Cho Quan TPHCM')}" target="_blank">${svg(ICON.pin,2)} Chỉ đường</a></div>
+  </div>`).join('');
+
+/* ----- 9. FAQ ----- */
+const FAQ = [
+  {q:'Người cao tuổi được hưởng trợ cấp hưu trí xã hội thế nào?',a:`Người từ đủ 75 tuổi (hoặc từ đủ 70 đến dưới 75 tuổi thuộc hộ nghèo/cận nghèo) không hưởng lương hưu/trợ cấp BHXH được hưởng trợ cấp hưu trí xã hội <b>650.000 đồng/tháng</b> (mức của TP.HCM), kèm thẻ BHYT miễn phí và hỗ trợ chi phí mai táng. Mang CCCD, số tài khoản ngân hàng đến Trung tâm Phục vụ Hành chính công phường (53A–53B Trần Phú) để làm hồ sơ, hoặc nộp online qua Cổng Dịch vụ công.`},
+  {q:'Đăng ký tạm trú cần giấy tờ gì?',a:`Cần CCCD/định danh điện tử VNeID và giấy tờ chứng minh chỗ ở hợp pháp (hợp đồng thuê nhà, văn bản đồng ý của chủ nhà…). Khai báo trực tuyến qua app VNeID hoặc trực tiếp tại Công an phường.`},
+  {q:'Làm khai sinh cho con ở đâu, mất bao lâu?',a:`Làm tại Bộ phận Một cửa UBND phường nơi cư trú, thường giải quyết trong ngày và miễn lệ phí. Mang giấy chứng sinh và CCCD cha mẹ.`},
+  {q:'Mất thẻ BHYT thì làm sao?',a:`Có thể dùng app VssID thay thẻ giấy khi đi khám, hoặc xin cấp lại tại cơ quan BHXH/đại lý thu. Hộ nghèo và người trên 80 tuổi được cấp miễn phí.`},
+  {q:'Phản ánh đường hỏng, rác thải gửi ở đâu?',a:`Liên hệ Trưởng Khu phố 15 hoặc UBND phường trong mục Danh bạ (kèm ảnh và địa chỉ cụ thể), hoặc nhắn qua Zalo Công an phường. Cán bộ sẽ tiếp nhận và xử lý.`},
+  {q:'Quét QR có tốn tiền hay cần cài app không?',a:`Hoàn toàn miễn phí và không cần cài app. Chỉ cần mở camera điện thoại quét mã trên móc khóa là vào được cẩm nang này.`},
+];
+document.getElementById('list9').innerHTML = FAQ.map((x,i)=>`
+  <details class="item" data-search="${(x.q+' '+x.a).replace(/<[^>]*>/g,' ').replace(/"/g,'')}">
+    <summary><span class="num">${svg(ICON.faq)}</span><span>${x.q}</span><span class="chev">${svg(ICON.chev)}</span></summary>
+    <div class="body">${x.a}</div>
+  </details>`).join('');
+
+/* ============ ĐIỀU HƯỚNG ============ */
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // tab active
+  document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('on'));
+  const map={home:'t-home'}; 
+  const tb=document.getElementById(map[id]); if(tb)tb.classList.add('on');
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+/* ============ TÌM KIẾM TRANG CHỦ ============ */
+document.getElementById('q').addEventListener('input',e=>{
+  const v=e.target.value.toLowerCase().trim();
+  document.querySelectorAll('#grid .card').forEach(c=>{
+    const hit=!v || c.dataset.search.toLowerCase().includes(v);
+    c.style.display=hit?'':'none';
+  });
+});
+
+/* ============ TRỢ NĂNG: PHÓNG TO CHỮ ============ */
+let big=false;
+function toggleFont(){
+  big=!big;
+  document.documentElement.style.setProperty('--fs-base',big?'21px':'18px');
+  document.getElementById('fontBtn').innerHTML = big?'A<b>−</b>':'A<b>+</b>';
+}
+</script>
+</body>
+</html>
