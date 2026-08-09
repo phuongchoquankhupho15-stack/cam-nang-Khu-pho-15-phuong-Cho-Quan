@@ -119,7 +119,6 @@ button{font-family:inherit;cursor:pointer}
 .c8 .badge{background:linear-gradient(145deg,#EF6C00,#E65100)}
 .c9 .badge{background:linear-gradient(145deg,#455A64,#37474F)}
 .c10 .badge{background:linear-gradient(145deg,#AD1457,#880E4F)}
-
 /* ====== Trang con ====== */
 .page{display:none;padding:0 0 12px;animation:fade .25s ease}
 .page.active{display:block}
@@ -182,6 +181,8 @@ button{font-family:inherit;cursor:pointer}
 .dvc-btns a.dvc{background:var(--gov-blue);color:#fff}
 .dvc-btns a.dvc:active{background:var(--gov-blue-dark)}
 .dvc-btns a.vneid{background:#E2F5E9;color:var(--ok);border:1.5px solid #b9e4cb}
+.dvc-btns a.zalobtn{background:#0068FF;color:#fff}
+.dvc-btns a.zalobtn:active{background:#0052cc}
 .dvc-btns a svg{width:17px;height:17px;flex:0 0 auto}
 .sch-group{margin-top:14px}
 .sch-group h4{color:var(--gov-blue-dark);margin:0 0 8px;font-size:.92rem;border-bottom:2px solid var(--gov-blue-soft);padding-bottom:4px}
@@ -335,7 +336,7 @@ button{font-family:inherit;cursor:pointer}
 
     <div class="footer">
       <div class="line"></div>
-      <p><b>Khu phố 15 – Phường Chợ Quán</b><br>Mô hình “Dân vận khéo – Móc khóa QR”<br>Phục vụ Nhân dân · Cập nhật 06/2026</p>
+      <p><b>Khu phố 15 – Phường Chợ Quán</b><br>Mô hình “Dân vận khéo – Móc khóa QR”<br>Phục vụ Nhân dân · Cập nhật 08/2026</p>
     </div>
   </div>
 
@@ -482,11 +483,16 @@ const CONTACTS = [
   {n:'Tổng đài / Liên hệ UBND phường',s:'Tiếp nhận phản ánh, hỏi đáp',i:ICON.phone,tel:'02838333333'},
   {n:'Trung tâm Hành chính công',s:'53A–53B Trần Phú · Một cửa',i:ICON.doc,tel:'02838535455',map:1,addr:'53A Tran Phu Phuong Cho Quan TPHCM'},
   {n:'Công an Phường',s:'26 Nguyễn Biểu, Khu phố 1 · Bộ phận 1 cửa',i:ICON.shield,tel:'02838354924',map:1,addr:'26 Nguyen Bieu Phuong Cho Quan TPHCM',zalo:'https://zalo.me/g/jhlngv064'},
+  {n:'Bí thư Đảng ủy – Chủ tịch HĐND phường',s:'Đ/c Cao Sơn Yên',i:ICON.star},
   {n:'Chủ tịch UBND phường',s:'Đ/c Nguyễn Võ Xuân Kỳ',i:ICON.user,tel:'0903923631'},
+  {n:'Phó Chủ tịch UBND phường',s:'Đ/c Phan Ngọc Phát · Giám đốc TT Phục vụ hành chính công',i:ICON.user},
+  {n:'Phó Chủ tịch UBND phường',s:'Đ/c Nhan Huệ Phương',i:ICON.user},
   {n:'Trưởng Công an phường',s:'Đ/c Trịnh Khánh Hùng',i:ICON.shield,tel:'0987934567'},
-  {n:'Chỉ huy trưởng Quân sự phường',s:'Đ/c Nguyễn Tiến Sĩ',i:ICON.star,tel:'0777722025'},
+  {n:'Chỉ huy trưởng Quân sự phường',s:'Đ/c Hồ Huy Khải',i:ICON.star},
+  {n:'Phó Chỉ huy trưởng Quân sự phường',s:'Đ/c Nguyễn Tiến Sỹ',i:ICON.star,tel:'0777722025'},
   {n:'Trưởng phòng Văn hóa – Xã hội',s:'Đ/c Nguyễn Xuân Thọ',i:ICON.heart,tel:'0907567986'},
-  {n:'Trưởng phòng Kinh tế – Hạ tầng – Đô thị',s:'Đ/c Phạm Trung Trực',i:ICON.city,tel:'0989370991'},
+  {n:'Trưởng phòng Kinh tế, Hạ tầng và Đô thị',s:'Đ/c Phạm Trung Trực',i:ICON.city,tel:'0989370991'},
+  {n:'Chánh Văn phòng HĐND – UBND phường',s:'Đ/c Nguyễn Thị Xuân Thảo',i:ICON.doc},
   {n:'Chủ tịch Ủy ban MTTQ phường',s:'Đ/c Lê Tấn Tài',i:ICON.heart,tel:'0903322468'},
   {n:'Trưởng Khu phố 15',s:'Bà Lê Thị Bạch Tuyết',i:ICON.user,tel:'0903974478'},
   {n:'Điện lực (EVNHCMC)',s:'Sự cố điện 24/24',i:ICON.bolt,tel:'1900545454'},
@@ -553,7 +559,7 @@ document.getElementById('list2').innerHTML = TTHC.map((x,i)=>`
 
 /* ----- 3. An sinh ----- */
 const ASXH = [
-  {t:'Nhóm Zalo Bảo trợ xã hội phường',b:`Tham gia nhóm Zalo để cập nhật thông tin chi trả trợ cấp, chính sách an sinh và được hỗ trợ trực tiếp.<br><br>👉 <a href="https://zalo.me/g/doiqmb670" target="_blank" style="color:var(--gov-blue);font-weight:700">Bấm vào đây để vào nhóm Zalo</a><br><br>Hoặc gọi: <a href="tel:02838329999" style="color:var(--gov-blue);font-weight:700">(028) 3832 9999</a>`},
+  {t:'Nhóm Zalo Bảo trợ – An sinh xã hội phường',b:`Tham gia nhóm Zalo để cập nhật thông tin chi trả trợ cấp, chính sách bảo trợ – an sinh xã hội và được cán bộ phường hỗ trợ trực tiếp.<div class="dvc-btns"><a class="zalobtn" href="https://zalo.me/g/ajvavb410" target="_blank">${svg(ICON.zalo)} Vào nhóm Zalo Bảo trợ – An sinh xã hội</a></div><br>Hoặc gọi Phòng Văn hóa – Xã hội (Đ/c Nguyễn Xuân Thọ): <a href="tel:0907567986" style="color:var(--gov-blue);font-weight:700">0907 567 986</a>`},
   {t:'Người cao tuổi – Trợ cấp hưu trí xã hội',b:`<b>Đối tượng:</b> công dân cư trú tại phường <b>từ đủ 75 tuổi</b> trở lên; hoặc <b>từ đủ 70 đến dưới 75 tuổi</b> thuộc hộ nghèo, hộ cận nghèo. Không hưởng lương hưu/trợ cấp BHXH hằng tháng, hoặc đang hưởng mức thấp hơn mức trợ cấp hưu trí xã hội.<br><br><b>Mức hưởng:</b> 650.000 đồng/tháng (theo mức của TP.HCM). Ngoài ra được <b>cấp thẻ BHYT miễn phí</b> và <b>hỗ trợ chi phí mai táng</b> khi qua đời.<br><br><b>Hồ sơ mang theo:</b> CCCD bản chính; mã số thẻ BHYT (nếu có); số tài khoản ngân hàng của người đề nghị (để nhận trợ cấp); văn bản đề nghị theo Mẫu số 01 (Nghị định 176/2025/NĐ-CP).<br><br><b>Nơi nộp:</b> Trung tâm Phục vụ Hành chính công phường (53A–53B Trần Phú), hoặc nộp online qua Cổng Dịch vụ công Quốc gia.<br><br>Người cao tuổi còn được chúc thọ, mừng thọ dịp Tết.`},
   {t:'Người khuyết tật',b:`Xác định mức độ khuyết tật → hưởng trợ cấp hằng tháng, cấp thẻ BHYT, miễn/giảm giá vé dịch vụ công cộng. Liên hệ cán bộ LĐ-TB&XH phường.`},
   {t:'Trẻ em',b:`Hỗ trợ trẻ em mồ côi, trẻ có hoàn cảnh đặc biệt. Tiêm chủng mở rộng miễn phí. Học bổng – tặng quà dịp 1/6, Trung thu.`},
